@@ -13,8 +13,8 @@
 ;; Shape parameters ;;
 ;;;;;;;;;;;;;;;;;;;;;;
 
-(def nrows 4)
-(def ncols 5)
+(def nrows 5)
+(def ncols 6)
 
 (def α (/ π 12))                        ; curvature of the columns
 (def β (/ π 36))                        ; curvature of the rows
@@ -593,14 +593,15 @@
                                      )))
 
 (def usb-holder-position (key-position 1 0.085 (map + (wall-locate2 0 1) [0 (/ mount-height 2) 0])))
-(def usb-holder-size [6.5 8.0 13.6])
+(def usb-holder-size [30 8.0 12])
 (def usb-holder-thickness 4)
 (def usb-holder
     (->> (cube (+ (first usb-holder-size) usb-holder-thickness) (second usb-holder-size) (+ (last usb-holder-size) usb-holder-thickness))
          (translate [(first usb-holder-position) (second usb-holder-position) (/ (+ (last usb-holder-size) usb-holder-thickness) 2)])))
+
 (def usb-holder-hole
     (->> (apply cube usb-holder-size)
-         (translate [(first usb-holder-position) (second usb-holder-position) (/ (+ (last usb-holder-size) usb-holder-thickness) 2)])))
+         (translate [(- (first usb-holder-position) ( / (first usb-holder-size) 4 )) (second usb-holder-position) (/ (last usb-holder-size) 2)])))
 
 (def teensy-width 20)  
 (def teensy-height 12)
@@ -662,9 +663,9 @@
          (screw-insert 3 0         bottom-radius top-radius height)
          (screw-insert lastcol 1   bottom-radius top-radius height)
          ))
-(def screw-insert-height 3.8)
-(def screw-insert-bottom-radius (/ 5.31 2))
-(def screw-insert-top-radius (/ 5.1 2))
+(def screw-insert-height 6.7)
+(def screw-insert-bottom-radius (/ 4.0 2))
+(def screw-insert-top-radius (/ 3.8 2))
 (def screw-insert-holes  (screw-insert-all-shapes screw-insert-bottom-radius screw-insert-top-radius screw-insert-height))
 (def screw-insert-outers (screw-insert-all-shapes (+ screw-insert-bottom-radius 1.6) (+ screw-insert-top-radius 1.6) (+ screw-insert-height 1.5)))
 (def screw-insert-screw-holes  (screw-insert-all-shapes 1.7 1.7 350))
@@ -677,12 +678,9 @@
                     thumb-connectors
                     (difference (union case-walls 
                                        screw-insert-outers 
-                                       ; teensy-holder
-                                       usb-holder)
-                                rj9-space 
+                                       )
                                 usb-holder-hole
                                 screw-insert-holes)
-                    rj9-holder
                     ; thumbcaps
                     ; caps
                     )
